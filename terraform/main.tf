@@ -153,14 +153,14 @@ resource "aws_instance" "nginx1" {
   # add remote exec configuration
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y ansible",
+      "sudo yum update -y",
+      #"sudo apt-get install -y ansible",
       #"ansible-playbook -i inventory playbook.yml"
     ]
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("/home/paul/aws_rsa.pem")
+      private_key = file("aws_rsa.pem")
       host        = aws_instance.nginx1.public_ip
     }
   }
