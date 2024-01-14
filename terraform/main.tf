@@ -159,7 +159,7 @@ resource "aws_instance" "nginx1" {
     ]
     connection {
       type        = "ssh"
-      user        = "ubuntu"
+      user        = "ec2-user"
       private_key = file("/home/paul/aws_rsa.pem")
       host        = aws_instance.nginx1.public_ip
     }
