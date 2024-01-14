@@ -149,11 +149,24 @@ resource "aws_instance" "nginx1" {
 
   # include aws aws_key_pair.deployer.key_name
   key_name = "aws_rsa"
+  
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("aws_rsa.pem")
+    host        = aws_instance.nginx1.public_ip
+  }
 
   provisioner "file" {
-    source      = "ansible"
-    destination = "ansible"
+    source      = "../ansible"
+    destination = "/home/ec2-user/ansible"
   }
+
+  provisioner "file" {
+    source      = "../templates/userdata.sh"
+    destination = "/home/ec2-user/userdata.sh"
+  }
+
   # add remote exec configuration
   provisioner "remote-exec" {
 
@@ -161,14 +174,12 @@ resource "aws_instance" "nginx1" {
       "sudo yum update -y",
       "sudo amazon-linux-extras install -y ansible2",
       "pwd",
-      "ansible-playbook -i ansible/hosts ansible/playbook.yml"
+      "ls -la",
+      "ansible-playbook -i ansible/hosts ansible/playbook.yml",
+      "chmod +x /home/ec2-user/userdata.sh",
+      "sh /home/ec2-user/userdata.sh",
     ]
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("aws_rsa.pem")
-      host        = aws_instance.nginx1.public_ip
-    }
+    on_failure = continue
   }
 
 }
