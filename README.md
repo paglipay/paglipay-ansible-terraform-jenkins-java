@@ -1,221 +1,74 @@
-# Course-end Project 1: Automating Infrastructure using Terraform
+# CI/CD Deployment Using Ansible CM Tool
 
-## Overview
+## Course-end Project 1
 
-In today's technological landscape, infrastructure automation is fundamental. While much focus is placed on software development processes, a robust infrastructure deployment strategy is equally crucial. Automating infrastructure not only enhances disaster recovery but also streamlines testing and development processes.
+### Description
 
-Your organization is transitioning towards DevOps methodology, emphasizing automated provisioning of infrastructure. The pivotal requirement is to establish a centralized server for Jenkins, a crucial component in the DevOps toolchain. Utilizing Terraform, a powerful provisioning tool, this project aims to set up the required infrastructure and subsequently install essential automation tools within it.
+As a DevOps engineer at XYZ Ltd., you are tasked with automating the deployment of a Java application using Ansible as the Configuration Management (CM) tool. The goal is to integrate Ansible with Jenkins CI server, allowing the automation of the deployment process for WAR files on Tomcat/Jetty web containers. This README.md file serves as documentation for the course project.
 
-### Project Objectives
+### Steps to Perform
 
-- Provision a central server for Jenkins using Terraform.
-- Establish connectivity to the provisioned server.
-- Install Jenkins along with essential dependencies like Java and Python within the instance.
+1. **Configure Jenkins Server as Ansible Provisioning Machine:**
+   - Set up Jenkins as the Ansible provisioning machine to enable the execution of Ansible playbooks.
 
-### Tools Required
+2. **Install Ansible Plugins in Jenkins CI Server:**
+   - Ensure that the necessary Ansible plugins are installed on the Jenkins CI server to facilitate seamless integration.
 
-- Terraform
-- AWS account with appropriate security credentials
-- Keypair for secure access
+3. **Prepare Ansible Playbook to Run Maven Build on Jenkins CI Server:**
+   - Create an Ansible playbook that orchestrates the Maven build process on the Jenkins CI server.
 
-### Deliverables
+4. **Prepare Ansible Playbook to Execute Deployment Steps on Remote Web Container with Restart:**
+   - Develop an Ansible playbook for deploying custom WAR files to a web container, followed by the restart of the web container.
 
-1. **Launch an EC2 Instance Using Terraform**
-2. **Connect to the Provisioned Instance**
-3. **Install Jenkins, Java, and Python within the Instance**
+### Terraform Configuration (main.tf)
 
-### Project Source Code - `main.tf` - https://github.com/paglipay/paglipay-terraform-jenkins.git
+The project includes Terraform configuration to provision infrastructure on AWS for hosting the Java application. Here's an overview of the main components:
 
-```hcl
-# The provided Terraform code focuses on provisioning infrastructure components for AWS using Terraform.
+- **Providers:**
+  - AWS provider is configured with the necessary credentials and region.
 
-# Note: The current code successfully creates VPC, subnets, security groups, and an EC2 instance, and proceeds to install Jenkins, Java, Python, and other necessary tools.
+- **Data:**
+  - Retrieves the latest Amazon Linux AMI using AWS Systems Manager Parameter Store.
 
-##################################################################################
-# PROVIDERS
-##################################################################################
+- **Resources:**
+  - Defines VPC, internet gateway, public subnet, route table, and associates the subnet with the route table.
+  - Configures security groups for Nginx, allowing various ports for HTTP access.
+  - Creates an EC2 instance (nginx1) with the specified configuration, including provisioning scripts.
 
-provider "aws" {
-  region = "us-east-1"
-}
+### Jenkinsfile
 
-##################################################################################
-# DATA
-##################################################################################
+The Jenkinsfile defines the Jenkins pipeline with the following stages:
 
-data "aws_ssm_parameter" "amzn2_linux" {
-  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+1. **Checkout:**
+   - Clones the project repository from GitHub.
 
-}
+2. **Plan:**
+   - Initializes Terraform and generates a plan for infrastructure changes.
 
+3. **Approval:**
+   - If auto-approval is not enabled, prompts for manual approval based on the generated Terraform plan.
 
-##################################################################################
-# RESOURCES
-##################################################################################
+4. **Apply:**
+   - Applies the Terraform changes, deploying the infrastructure.
 
-# NETWORKING #
-resource "aws_vpc" "app" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
+### Usage
 
-}
+1. **Jenkins Configuration:**
+   - Configure Jenkins with Ansible and the necessary plugins.
+   - Set up Jenkins credentials for AWS access.
 
-resource "aws_internet_gateway" "app" {
-  vpc_id = aws_vpc.app.id
+2. **Run Jenkins Pipeline:**
+   - Trigger the Jenkins pipeline, providing required parameters such as AWS credentials and the desired action (apply/destroy).
+   - Approve the plan if manual approval is required.
 
-}
+3. **Monitor Deployment:**
+   - Monitor Jenkins console output for the progress of the deployment.
+   - Check AWS console for provisioned infrastructure.
 
-resource "aws_subnet" "public_subnet1" {
-  cidr_block              = "10.0.0.0/24"
-  vpc_id                  = aws_vpc.app.id
-  map_public_ip_on_launch = true
-}
+### Additional Notes
 
-# ROUTING #
-resource "aws_route_table" "app" {
-  vpc_id = aws_vpc.app.id
+- The project assumes the presence of Ansible playbooks and templates in the specified directories.
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.app.id
-  }
-}
+Feel free to customize the Ansible playbooks, Terraform configuration, and Jenkins pipeline to suit your specific requirements.
 
-resource "aws_route_table_association" "app_subnet1" {
-  subnet_id      = aws_subnet.public_subnet1.id
-  route_table_id = aws_route_table.app.id
-}
-
-# SECURITY GROUPS #
-
-
-# Nginx security group 
-resource "aws_security_group" "nginx_sg" {
-  name   = "nginx_sg"
-  vpc_id = aws_vpc.app.id
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 9001
-    to_port     = 9001
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 9443
-    to_port     = 9443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 8081
-    to_port     = 8081
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTP access from anywhere
-  ingress {
-    from_port   = 5001
-    to_port     = 5001
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # outbound internet access
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# INSTANCES # https://dev.to/aws-builders/installing-jenkins-on-amazon-ec2-491e
-resource "aws_instance" "nginx1" {
-  ami                    = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public_subnet1.id
-  vpc_security_group_ids = [aws_security_group.nginx_sg.id]
-
-  user_data = <<EOF
-#! /bin/bash
-
-#sudo yum update -y
-
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-
-sudo yum upgrade -y
-sudo amazon-linux-extras install -y java-openjdk11
-
-sudo yum install -y jenkins
-sudo service jenkins start
-
-sudo yum install -y git python3
-
-
-sudo amazon-linux-extras install -y nginx1
-sudo service nginx start
-sudo rm /usr/share/nginx/html/index.html
-echo '<html><head><title>Taco Team Server</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
-
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install terraform
-
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
-sudo yum install -y docker
-sudo yum install -y python3-pip
-sudo pip3 install -y docker-compose
-sudo systemctl enable docker.service
-sudo systemctl start docker.service
-
-sudo usermod -a -G docker ec2-user
-
-sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-sudo docker network create --driver overlay   portainer_agent_network
-sudo docker service create   --name portainer_agent   --network portainer_agent_network   -p 9001:9001/tcp   --mode global   --constraint 'node.platform.os == linux'   --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock   --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/volumes   portainer/agent:2.19.2
-   
-sudo docker run -it -d -p 8081:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
-
-EOF
-
-}
+**Note:** Ensure that sensitive information such as AWS credentials and private keys is handled securely and not exposed in public repositories.
