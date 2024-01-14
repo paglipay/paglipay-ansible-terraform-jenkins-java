@@ -61,7 +61,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh 'terraform ${action} --auto-approve'
+                sh 'cd terraform/ ; terraform ${action} --auto-approve'
             }
             // steps {
             //     sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
