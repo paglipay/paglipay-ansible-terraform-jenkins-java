@@ -91,6 +91,46 @@ resource "aws_security_group" "nginx_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 9001
+    to_port     = 9001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 9443
+    to_port     = 9443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 8081
+    to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 5001
+    to_port     = 5001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # outbound internet access
   egress {
     from_port   = 0
@@ -107,42 +147,23 @@ resource "aws_instance" "nginx1" {
   subnet_id              = aws_subnet.public_subnet1.id
   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
 
-  user_data = <<EOF
-#! /bin/bash
+  # include aws aws_key_pair.deployer.key_name
+  key_name = "aws_rsa"
 
-#sudo yum update -y
-
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-
-sudo yum upgrade -y
-sudo amazon-linux-extras install -y java-openjdk11
-
-sudo yum install -y jenkins
-sudo service jenkins start
-
-sudo yum install -y git python3
-
-
-sudo amazon-linux-extras install -y nginx1
-sudo service nginx start
-sudo rm /usr/share/nginx/html/index.html
-echo '<html><head><title>Taco Team Server</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
-
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install terraform
-
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
-sudo yum install -y docker
-sudo usermod -a -G docker ec2-user
-sudo yum install -y python3-pip
-sudo pip3 install -y docker-compose
-sudo systemctl enable docker.service
-sudo systemctl start docker.service
-
-EOF
+  # add remote exec configuration
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y ansible",
+      #"ansible-playbook -i inventory playbook.yml"
+    ]
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("/home/paul/aws_rsa.pem")
+      host        = aws_instance.nginx1.public_ip
+    }
+  }
 
 }
 
