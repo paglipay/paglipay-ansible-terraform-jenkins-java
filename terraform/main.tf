@@ -154,8 +154,8 @@ resource "aws_instance" "nginx1" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
-      #"sudo apt-get install -y ansible",
-      #"ansible-playbook -i inventory playbook.yml"
+      "sudo amazon-linux-extras install -y ansible2",
+      "ansible-playbook -i ansible/hosts ansible/playbook.yml"
     ]
     connection {
       type        = "ssh"
