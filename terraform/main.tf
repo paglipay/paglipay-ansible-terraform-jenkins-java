@@ -150,11 +150,17 @@ resource "aws_instance" "nginx1" {
   # include aws aws_key_pair.deployer.key_name
   key_name = "aws_rsa"
 
+  provisioner "file" {
+    source      = "ansible"
+    destination = "ansible"
+  }
   # add remote exec configuration
   provisioner "remote-exec" {
+
     inline = [
       "sudo yum update -y",
       "sudo amazon-linux-extras install -y ansible2",
+      "pwd",
       "ansible-playbook -i ansible/hosts ansible/playbook.yml"
     ]
     connection {
