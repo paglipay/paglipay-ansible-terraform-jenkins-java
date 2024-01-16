@@ -37,17 +37,28 @@ resource "aws_instance" "nginx1" {
     destination = "/home/ec2-user/userdata.sh"
   }
 
+  provisioner "file" {
+    source      = "../spring-demo.zip"
+    destination = "/home/ec2-user/spring-demo.zip"
+  }
+
   # add remote exec configuration
   provisioner "remote-exec" {
 
     inline = [
       "sudo yum update -y",
-      "sudo amazon-linux-extras install -y ansible2",
-      "pwd",
-      "ls -la",
-      "ansible-playbook -i ansible/hosts ansible/playbook.yml",
-      "chmod +x /home/ec2-user/userdata.sh",
-      "sh /home/ec2-user/userdata.sh",
+      # "sudo amazon-linux-extras install -y ansible2",
+      # "pwd",
+      # "ls -la",
+      # "ansible-playbook -i ansible/hosts ansible/playbook.yml",
+      # "chmod +x /home/ec2-user/userdata.sh",
+      # "sh /home/ec2-user/userdata.sh",
+      "sudo yum install -y maven docker",
+      # "unzip /spring-demo.zip",  # Assuming project is transferred beforehand
+      # "cd spring-demo",
+      # "mvn clean install",
+      "docker build -t spring-demo .",
+      "docker run --rm -it -p 5000:5000/tcp paglipayspring-demo:latest"
     ]
     on_failure = continue
   }

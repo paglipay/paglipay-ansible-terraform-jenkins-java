@@ -1,15 +1,19 @@
 ---
-- name: Install apache server   # name of the playbook
-  hosts: webservers    # target group defined in the inventory file
+- name: Yum Install Docker and docker compose
+  hosts: docker
   become: yes
   tasks:
-    - name: install apache server   # name of the play
-      apt:
-        name: httpd
+    - name: Install Docker
+      yum:
+        name: docker
         state: latest
-        update_cache: yes
-    - name: start and enable autostart of apache server
-      systemd:
-        name: httpd
+    - name: Start Docker
+      service:
+        name: docker
         state: started
         enabled: yes
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        state: latest
+```
