@@ -70,7 +70,7 @@ resource "aws_instance" "nginx1" {
       "sudo systemctl start docker.service",
 
       "sudo docker build -t paglipay/spring-demo:latest .",
-      "sudo docker run --rm -it -p 80:5000/tcp paglipay/spring-demo:latest"
+      "sudo docker run --rm -it -d -p 80:5000/tcp paglipay/spring-demo:latest"
     ]
     on_failure = continue
   }
@@ -134,7 +134,7 @@ resource "aws_instance" "nginx2" {
       "sudo systemctl enable docker.service",
       "sudo systemctl start docker.service",
       "sudo docker build -t paglipay/spring-demo:latest .",
-      "sudo docker run --rm -it -p 80:5000/tcp paglipay/spring-demo:latest"
+      "sudo docker run --rm -it -d -p 80:5000/tcp paglipay/spring-demo:latest"
     ]
     on_failure = continue
   }
