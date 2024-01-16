@@ -17,13 +17,48 @@ resource "aws_instance" "nginx1" {
   subnet_id              = aws_subnet.public_subnet1.id
   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
 
-  user_data = <<EOF
-#! /bin/bash
-sudo amazon-linux-extras install -y nginx1
-sudo service nginx start
-sudo rm /usr/share/nginx/html/index.html
-echo '<html><head><title>Taco Team Server 1</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
-EOF
+  # include aws aws_key_pair.deployer.key_name
+  key_name = "aws_rsa"
+
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("aws_rsa.pem")
+    host        = aws_instance.nginx1.public_ip
+  }
+
+  provisioner "file" {
+    source      = "../ansible"
+    destination = "/home/ec2-user/ansible"
+  }
+
+  provisioner "file" {
+    source      = "../templates/userdata.sh"
+    destination = "/home/ec2-user/userdata.sh"
+  }
+
+  # add remote exec configuration
+  provisioner "remote-exec" {
+
+    inline = [
+      "sudo yum update -y",
+      "sudo amazon-linux-extras install -y ansible2",
+      "pwd",
+      "ls -la",
+      "ansible-playbook -i ansible/hosts ansible/playbook.yml",
+      "chmod +x /home/ec2-user/userdata.sh",
+      "sh /home/ec2-user/userdata.sh",
+    ]
+    on_failure = continue
+  }
+
+#   user_data = <<EOF
+# #! /bin/bash
+# sudo amazon-linux-extras install -y nginx1
+# sudo service nginx start
+# sudo rm /usr/share/nginx/html/index.html
+# echo '<html><head><title>Taco Team Server 1</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
+# EOF
 
   tags = local.common_tags
 
