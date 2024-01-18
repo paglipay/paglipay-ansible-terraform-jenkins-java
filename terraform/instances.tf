@@ -20,6 +20,13 @@ resource "aws_instance" "nginx1" {
   # include aws aws_key_pair.deployer.key_name
   key_name = "aws_rsa"
 
+  # user_data = templatefile("${path.module}/templates/userdata.sh", {
+  #   playbook_repository = var.playbook_repository
+  #   secret_id           = var.api_key_secret_id
+  #   host_list_ssm_name  = local.host_list_ssm_name
+  #   site_name_ssm_name  = local.site_name_ssm_name
+  # })
+  
   connection {
     type        = "ssh"
     user        = "ec2-user"
@@ -52,17 +59,18 @@ resource "aws_instance" "nginx1" {
 
     inline = [
       "sudo yum update -y",
-      # "sudo amazon-linux-extras install -y ansible2",
+      "sudo amazon-linux-extras install -y ansible2",
       # "pwd",
       # "ls -la",
-      # "ansible-playbook -i ansible/hosts ansible/playbook.yml",
+      "ansible-playbook -i ansible/hosts ansible/playbook.yml",
       # "chmod +x /home/ec2-user/userdata.sh",
       # "sh /home/ec2-user/userdata.sh",
       # "sudo yum install -y maven",
       # "unzip /spring-demo.zip",  # Assuming project is transferred beforehand
       # "cd spring-demo",
       # "mvn clean install",
-      "sudo yum install -y docker",
+      
+      # "sudo yum install -y docker",
       "sudo usermod -a -G docker ec2-user",
       "sudo yum install -y python3-pip",
       # "sudo pip3 install -y docker-compose",

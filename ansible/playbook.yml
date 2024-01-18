@@ -1,6 +1,6 @@
 ---
 - name: Yum Install Docker and docker compose
-  hosts: docker
+  hosts: all
   become: yes
   tasks:
     - name: Install Docker
