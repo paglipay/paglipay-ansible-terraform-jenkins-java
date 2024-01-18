@@ -34,9 +34,16 @@ resource "aws_instance" "nginx1" {
     host        = aws_instance.nginx1.public_ip
   }
 
+ 
+
   provisioner "file" {
     source      = "../ansible"
     destination = "/home/ec2-user/ansible"
+  } 
+  
+  provisioner "file" {
+    source      = "../aws_rsa.pem"
+    destination = "/home/ec2-user/ansible/aws_rsa.pem"
   }
 
   provisioner "file" {
@@ -62,7 +69,7 @@ resource "aws_instance" "nginx1" {
       "sudo amazon-linux-extras install -y ansible2",
       # "pwd",
       # "ls -la",
-      "ansible-playbook -i ansible/hosts ansible/playbook.yml",
+      "cd ansible && ansible-playbook -i hosts --private-key ../aws_rsa.pem playbook.yml",
       # "chmod +x /home/ec2-user/userdata.sh",
       # "sh /home/ec2-user/userdata.sh",
       # "sudo yum install -y maven",
