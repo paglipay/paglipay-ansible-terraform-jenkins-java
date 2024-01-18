@@ -45,6 +45,11 @@ resource "aws_instance" "nginx1" {
     source      = "./aws_rsa.pem"
     destination = "/home/ec2-user/ansible/aws_rsa.pem"
   }
+  
+  provisioner "file" {
+    source      = "../ansible/ansible.cfg"
+    destination = "/home/ec2-user/ansible.cfg"
+  }
 
   provisioner "file" {
     source      = "../templates/userdata.sh"
