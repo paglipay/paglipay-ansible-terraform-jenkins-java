@@ -1,0 +1,20 @@
+---
+- name: Maven Build Playbook
+  hosts: localhost
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Clone Git Repository
+      git:
+        repo: https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git
+        dest: app
+        version: master
+
+    - name: Run Maven Build
+      command: "mvn clean install"
+      args:
+        chdir: app/spring-demo
+
+    - name: Copy WAR File to Artifact Directory
+      command: "cp app/spring-demo/target/java-getting-started-1.0.war app/"
