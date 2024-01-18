@@ -19,8 +19,6 @@
     - name: Copy WAR File to Artifact Directory
       command: "cp app/spring-demo/target/java-getting-started-1.0.war app/"
 
-    - name: Run Java Application
-      command: "java -jar java-getting-started-1.0.war"
-      args:
-        chdir: app/
-
+    - name: Run Java Application detached
+      command: "java -jar app/java-getting-started-1.0.war > /dev/null 2>&1 &"
+      
