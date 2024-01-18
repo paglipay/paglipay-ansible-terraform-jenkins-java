@@ -87,66 +87,66 @@ resource "aws_instance" "nginx1" {
 
 }
 
-resource "aws_instance" "nginx2" {
-  ami                    = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
-  instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public_subnet2.id
-  vpc_security_group_ids = [aws_security_group.nginx_sg.id]
+# resource "aws_instance" "nginx2" {
+#   ami                    = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
+#   instance_type          = var.instance_type
+#   subnet_id              = aws_subnet.public_subnet2.id
+#   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
 
-  # include aws aws_key_pair.deployer.key_name
-  key_name = "aws_rsa"
+#   # include aws aws_key_pair.deployer.key_name
+#   key_name = "aws_rsa"
 
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("aws_rsa.pem")
-    host        = aws_instance.nginx1.public_ip
-  }
+#   connection {
+#     type        = "ssh"
+#     user        = "ec2-user"
+#     private_key = file("aws_rsa.pem")
+#     host        = aws_instance.nginx1.public_ip
+#   }
 
-  provisioner "file" {
-    source      = "../ansible"
-    destination = "/home/ec2-user/ansible"
-  }
+#   provisioner "file" {
+#     source      = "../ansible"
+#     destination = "/home/ec2-user/ansible"
+#   }
 
-  provisioner "file" {
-    source      = "../templates/userdata.sh"
-    destination = "/home/ec2-user/userdata.sh"
-  }
+#   provisioner "file" {
+#     source      = "../templates/userdata.sh"
+#     destination = "/home/ec2-user/userdata.sh"
+#   }
 
-  provisioner "file" {
-    source      = "../spring-demo"
-    destination = "/home/ec2-user/spring-demo"
-  }
+#   provisioner "file" {
+#     source      = "../spring-demo"
+#     destination = "/home/ec2-user/spring-demo"
+#   }
 
-  provisioner "file" {
-    source      = "../Dockerfile"
-    destination = "/home/ec2-user/Dockerfile"
-  }
+#   provisioner "file" {
+#     source      = "../Dockerfile"
+#     destination = "/home/ec2-user/Dockerfile"
+#   }
 
-  # add remote exec configuration
-  provisioner "remote-exec" {
+#   # add remote exec configuration
+#   provisioner "remote-exec" {
 
-    inline = [
-      "sudo yum update -y",
-      "sudo yum install -y docker",
-      "sudo usermod -a -G docker ec2-user",
-      "sudo yum install -y python3-pip",
-      "sudo systemctl enable docker.service",
-      "sudo systemctl start docker.service",
-      "sudo docker build -t paglipay/spring-demo:latest .",
-      "sudo docker run --rm -it -d -p 80:5000/tcp paglipay/spring-demo:latest"
-    ]
-    on_failure = continue
-  }
+#     inline = [
+#       "sudo yum update -y",
+#       "sudo yum install -y docker",
+#       "sudo usermod -a -G docker ec2-user",
+#       "sudo yum install -y python3-pip",
+#       "sudo systemctl enable docker.service",
+#       "sudo systemctl start docker.service",
+#       "sudo docker build -t paglipay/spring-demo:latest .",
+#       "sudo docker run --rm -it -d -p 80:5000/tcp paglipay/spring-demo:latest"
+#     ]
+#     on_failure = continue
+#   }
 
-#   user_data = <<EOF
-# #! /bin/bash
-# sudo amazon-linux-extras install -y nginx1
-# sudo service nginx start
-# sudo rm /usr/share/nginx/html/index.html
-# echo '<html><head><title>Taco Team Server 1</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
-# EOF
+# #   user_data = <<EOF
+# # #! /bin/bash
+# # sudo amazon-linux-extras install -y nginx1
+# # sudo service nginx start
+# # sudo rm /usr/share/nginx/html/index.html
+# # echo '<html><head><title>Taco Team Server 1</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
+# # EOF
 
-  tags = local.common_tags
+#   tags = local.common_tags
 
-}
+# }

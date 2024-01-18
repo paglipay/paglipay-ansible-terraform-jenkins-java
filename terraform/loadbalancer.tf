@@ -42,8 +42,8 @@ resource "aws_lb_target_group_attachment" "nginx1" {
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "nginx2" {
-  target_group_arn = aws_lb_target_group.nginx.arn
-  target_id        = aws_instance.nginx2.id
-  port             = 80
-}
+# resource "aws_lb_target_group_attachment" "nginx2" {
+#   target_group_arn = aws_lb_target_group.nginx.arn
+#   target_id        = aws_instance.nginx2.id
+#   port             = 80
+# }
