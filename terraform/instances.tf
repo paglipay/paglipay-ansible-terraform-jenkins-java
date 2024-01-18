@@ -69,7 +69,7 @@ resource "aws_instance" "nginx1" {
       "sudo amazon-linux-extras install -y ansible2",
       # "pwd",
       # "ls -la",
-      "sudo chmod 600 ansible/aws_rsa.pem && cd ansible && ansible-playbook -i hosts --private-key ./aws_rsa.pem playbook.yml",
+      "sudo chmod 600 ansible/aws_rsa.pem && ansible-playbook -i ansible/hosts --private-key ansible/aws_rsa.pem ansible/playbook.yml",
       # "chmod +x /home/ec2-user/userdata.sh",
       # "sh /home/ec2-user/userdata.sh",
       # "sudo yum install -y maven",
