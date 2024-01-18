@@ -42,7 +42,7 @@ resource "aws_instance" "nginx1" {
   } 
   
   provisioner "file" {
-    source      = "../aws_rsa.pem"
+    source      = "./aws_rsa.pem"
     destination = "/home/ec2-user/ansible/aws_rsa.pem"
   }
 
