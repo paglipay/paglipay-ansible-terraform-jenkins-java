@@ -4,6 +4,13 @@
   vars:
     download_url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz
   tasks:
+  - name: Update the package cache
+    package:
+      update_cache: yes
+  - name: Install Java
+    package:
+      name: java
+      state: present
   - name: validate if Java is availble
     shell: java -version
 
@@ -74,13 +81,19 @@
     until: "result.status == 200"
     retries: 5
     delay: 10
-
+  - name: Install Git
+    package:
+      name: git
+      state: present
   - name: Clone Git Repository
     git:
       repo: https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git
       dest: app
       version: master
-
+  - name: Install Maven
+    package:
+      name: maven
+      state: present
   - name: Run Maven Build
     command: "mvn clean install"
     args:
