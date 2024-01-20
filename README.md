@@ -20,7 +20,7 @@ As a DevOps engineer at XYZ Ltd., you are tasked with automating the deployment 
 4. **Prepare Ansible Playbook to Execute Deployment Steps on Remote Web Container with Restart:**
    - Develop an Ansible playbook for deploying custom WAR files to a web container, followed by the restart of the web container.
 
-### Terraform Configuration (main.tf)
+### Terraform Configuration (terraform folder)
 
 The project includes Terraform configuration to provision infrastructure on AWS for hosting the Java application. Here's an overview of the main components:
 

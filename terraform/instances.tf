@@ -75,6 +75,7 @@ resource "aws_instance" "nginx1" {
       # "pwd",
       # "ls -la",
       "sudo chmod 600 ansible/aws_rsa.pem && ansible-playbook -i ansible/hosts --private-key ansible/aws_rsa.pem ansible/playbook.yml",
+      "ansible-playbook -i ansible/hosts --private-key ansible/aws_rsa.pem ansible/maven_build_playbook.yml",
       # "chmod +x /home/ec2-user/userdata.sh",
       # "sh /home/ec2-user/userdata.sh",
       # "sudo yum install -y maven",
