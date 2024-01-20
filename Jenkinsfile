@@ -12,6 +12,9 @@ pipeline {
         // AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_ACCESS_KEY_ID     = "${params.AWS_ACCESS_KEY_ID}"
         AWS_SECRET_ACCESS_KEY = "${params.AWS_SECRET_ACCESS_KEY}"
+        TF_VAR_aws_access_key     = "${params.AWS_ACCESS_KEY_ID}"
+        TF_VAR_aws_secret_key = "${params.AWS_SECRET_ACCESS_KEY}"
+
     }
 
     // agent {
@@ -52,7 +55,7 @@ pipeline {
 
            steps {
                script {
-                    def plan = readFile 'terraform/tfplan.txt'
+                    def plan = readFile 'terraform/tfplan'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                }
