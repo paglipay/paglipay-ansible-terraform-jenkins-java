@@ -1,0 +1,855 @@
+Started by user Paul Aglipay
+Obtained Jenkinsfile from git https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/paglipay-ansible-terraform-jenkins-java2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/paglipay-ansible-terraform-jenkins-java2/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git # timeout=10
+Fetching upstream changes from https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.2'
+ > git fetch --tags --force --progress -- https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 55ed50eee65b421b7c46f8394d465dc4d0fe2121 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 55ed50eee65b421b7c46f8394d465dc4d0fe2121 # timeout=10
+Commit message: "aws_rsa.pem"
+ > git rev-list --no-walk 48b24f9baa692259111968ce202c9a72a5204c8d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] dir
+Running in /var/lib/jenkins/workspace/paglipay-ansible-terraform-jenkins-java2/terraform
+[Pipeline] {
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/paglipay-ansible-terraform-jenkins-java2/terraform/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git # timeout=10
+Fetching upstream changes from https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.2'
+ > git fetch --tags --force --progress -- https://github.com/paglipay/paglipay-ansible-terraform-jenkins-java.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 55ed50eee65b421b7c46f8394d465dc4d0fe2121 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 55ed50eee65b421b7c46f8394d465dc4d0fe2121 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D master # timeout=10
+ > git checkout -b master 55ed50eee65b421b7c46f8394d465dc4d0fe2121 # timeout=10
+Commit message: "aws_rsa.pem"
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Plan)
+[Pipeline] sh
++ cd terraform/
++ terraform init
+
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Installing hashicorp/aws v5.32.1...
+- Installed hashicorp/aws v5.32.1 (signed by HashiCorp)
+
+Terraform has made some changes to the provider dependency selections recorded
+in the .terraform.lock.hcl file. Review those changes and commit them to your
+version control system if they represent changes you intended to make.
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[Pipeline] sh
++ cd terraform/
++ terraform plan -out tfplan
+[0m[1mdata.aws_ssm_parameter.amzn2_linux: Reading...[0m[0m
+[0m[1mdata.aws_availability_zones.available: Reading...[0m[0m
+[0m[1maws_vpc.app: Refreshing state... [id=vpc-0db0259fdb23abd47][0m
+[0m[1mdata.aws_ssm_parameter.amzn2_linux: Read complete after 2s [id=/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2][0m
+[0m[1mdata.aws_availability_zones.available: Read complete after 2s [id=us-east-1][0m
+[0m[1maws_subnet.public_subnet2: Refreshing state... [id=subnet-0f5d359a4d6037912][0m
+[0m[1maws_lb_target_group.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650][0m
+[0m[1maws_security_group.alb_sg: Refreshing state... [id=sg-02af7709d01693711][0m
+[0m[1maws_internet_gateway.app: Refreshing state... [id=igw-09c524f09c085759f][0m
+[0m[1maws_subnet.public_subnet1: Refreshing state... [id=subnet-0dda06f01f9bf2f5c][0m
+[0m[1maws_security_group.nginx_sg: Refreshing state... [id=sg-0bafdb6cff28fda4a][0m
+[0m[1maws_route_table.app: Refreshing state... [id=rtb-01994dfdc78e186a5][0m
+[0m[1maws_route_table_association.app_public_subnet1: Refreshing state... [id=rtbassoc-0a2af637bfe052f03][0m
+[0m[1maws_route_table_association.app_public_subnet2: Refreshing state... [id=rtbassoc-0e26b890f33136782][0m
+[0m[1maws_lb.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386][0m
+[0m[1maws_instance.nginx1: Refreshing state... [id=i-0f1818edc5d4a4593][0m
+[0m[1maws_lb_listener.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:listener/app/globo-web-alb/5727ebef5ee67386/de65e63e209ba25d][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+[31m-[0m/[32m+[0m destroy and then create replacement[0m
+
+Terraform will perform the following actions:
+
+[1m  # aws_instance.nginx1[0m is tainted, so must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_instance" "nginx1" {
+      [33m~[0m[0m arn                                  = "arn:aws:ec2:us-east-1:185409218150:instance/i-0f1818edc5d4a4593" -> (known after apply)
+      [33m~[0m[0m associate_public_ip_address          = true -> (known after apply)
+      [33m~[0m[0m availability_zone                    = "us-east-1a" -> (known after apply)
+      [33m~[0m[0m cpu_core_count                       = 1 -> (known after apply)
+      [33m~[0m[0m cpu_threads_per_core                 = 1 -> (known after apply)
+      [33m~[0m[0m disable_api_stop                     = false -> (known after apply)
+      [33m~[0m[0m disable_api_termination              = false -> (known after apply)
+      [33m~[0m[0m ebs_optimized                        = false -> (known after apply)
+      [31m-[0m[0m hibernation                          = false [90m-> null[0m[0m
+      [32m+[0m[0m host_id                              = (known after apply)
+      [32m+[0m[0m host_resource_group_arn              = (known after apply)
+      [32m+[0m[0m iam_instance_profile                 = (known after apply)
+      [33m~[0m[0m id                                   = "i-0f1818edc5d4a4593" -> (known after apply)
+      [33m~[0m[0m instance_initiated_shutdown_behavior = "stop" -> (known after apply)
+      [32m+[0m[0m instance_lifecycle                   = (known after apply)
+      [33m~[0m[0m instance_state                       = "running" -> (known after apply)
+      [33m~[0m[0m ipv6_address_count                   = 0 -> (known after apply)
+      [33m~[0m[0m ipv6_addresses                       = [] -> (known after apply)
+      [33m~[0m[0m monitoring                           = false -> (known after apply)
+      [32m+[0m[0m outpost_arn                          = (known after apply)
+      [32m+[0m[0m password_data                        = (known after apply)
+      [32m+[0m[0m placement_group                      = (known after apply)
+      [33m~[0m[0m placement_partition_number           = 0 -> (known after apply)
+      [33m~[0m[0m primary_network_interface_id         = "eni-02450122752e84443" -> (known after apply)
+      [33m~[0m[0m private_dns                          = "ip-10-0-0-123.ec2.internal" -> (known after apply)
+      [33m~[0m[0m private_ip                           = "10.0.0.123" -> (known after apply)
+      [33m~[0m[0m public_dns                           = "ec2-54-210-224-210.compute-1.amazonaws.com" -> (known after apply)
+      [33m~[0m[0m public_ip                            = "54.210.224.210" -> (known after apply)
+      [33m~[0m[0m secondary_private_ips                = [] -> (known after apply)
+      [33m~[0m[0m security_groups                      = [] -> (known after apply)
+      [32m+[0m[0m spot_instance_request_id             = (known after apply)
+        tags                                 = {
+            "billing_code" = "00"
+            "company"      = "Globomantics"
+            "project"      = "Globomantics-Paglipay"
+        }
+      [33m~[0m[0m tenancy                              = "default" -> (known after apply)
+      [32m+[0m[0m user_data                            = (known after apply)
+      [32m+[0m[0m user_data_base64                     = (known after apply)
+        [90m# (9 unchanged attributes hidden)[0m[0m
+
+      [31m-[0m[0m capacity_reservation_specification {
+          [31m-[0m[0m capacity_reservation_preference = "open" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m cpu_options {
+          [31m-[0m[0m core_count       = 1 [90m-> null[0m[0m
+          [31m-[0m[0m threads_per_core = 1 [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m credit_specification {
+          [31m-[0m[0m cpu_credits = "standard" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m enclave_options {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m maintenance_options {
+          [31m-[0m[0m auto_recovery = "default" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m metadata_options {
+          [31m-[0m[0m http_endpoint               = "enabled" [90m-> null[0m[0m
+          [31m-[0m[0m http_protocol_ipv6          = "disabled" [90m-> null[0m[0m
+          [31m-[0m[0m http_put_response_hop_limit = 1 [90m-> null[0m[0m
+          [31m-[0m[0m http_tokens                 = "optional" [90m-> null[0m[0m
+          [31m-[0m[0m instance_metadata_tags      = "disabled" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m private_dns_name_options {
+          [31m-[0m[0m enable_resource_name_dns_a_record    = false [90m-> null[0m[0m
+          [31m-[0m[0m enable_resource_name_dns_aaaa_record = false [90m-> null[0m[0m
+          [31m-[0m[0m hostname_type                        = "ip-name" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m root_block_device {
+          [31m-[0m[0m delete_on_termination = true [90m-> null[0m[0m
+          [31m-[0m[0m device_name           = "/dev/xvda" [90m-> null[0m[0m
+          [31m-[0m[0m encrypted             = false [90m-> null[0m[0m
+          [31m-[0m[0m iops                  = 100 [90m-> null[0m[0m
+          [31m-[0m[0m tags                  = {} [90m-> null[0m[0m
+          [31m-[0m[0m throughput            = 0 [90m-> null[0m[0m
+          [31m-[0m[0m volume_id             = "vol-0891b2917a2866676" [90m-> null[0m[0m
+          [31m-[0m[0m volume_size           = 8 [90m-> null[0m[0m
+          [31m-[0m[0m volume_type           = "gp2" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # aws_lb_target_group_attachment.nginx1[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_target_group_attachment" "nginx1" {
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m port             = 80
+      [32m+[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650"
+      [32m+[0m[0m target_id        = (known after apply)
+    }
+
+[1mPlan:[0m 2 to add, 0 to change, 1 to destroy.
+[0m
+Changes to Outputs:
+  [33m~[0m[0m aws_instance_public_dns = "http://ec2-3-83-29-29.compute-1.amazonaws.com" -> (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Approval)
+Stage "Approval" skipped due to when conditional
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Apply)
+[Pipeline] sh
++ cd terraform/
++ terraform destroy --auto-approve
+[0m[1mdata.aws_availability_zones.available: Reading...[0m[0m
+[0m[1mdata.aws_ssm_parameter.amzn2_linux: Reading...[0m[0m
+[0m[1maws_vpc.app: Refreshing state... [id=vpc-0db0259fdb23abd47][0m
+[0m[1mdata.aws_ssm_parameter.amzn2_linux: Read complete after 2s [id=/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2][0m
+[0m[1mdata.aws_availability_zones.available: Read complete after 2s [id=us-east-1][0m
+[0m[1maws_internet_gateway.app: Refreshing state... [id=igw-09c524f09c085759f][0m
+[0m[1maws_lb_target_group.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650][0m
+[0m[1maws_security_group.alb_sg: Refreshing state... [id=sg-02af7709d01693711][0m
+[0m[1maws_subnet.public_subnet1: Refreshing state... [id=subnet-0dda06f01f9bf2f5c][0m
+[0m[1maws_subnet.public_subnet2: Refreshing state... [id=subnet-0f5d359a4d6037912][0m
+[0m[1maws_security_group.nginx_sg: Refreshing state... [id=sg-0bafdb6cff28fda4a][0m
+[0m[1maws_route_table.app: Refreshing state... [id=rtb-01994dfdc78e186a5][0m
+[0m[1maws_lb.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386][0m
+[0m[1maws_route_table_association.app_public_subnet1: Refreshing state... [id=rtbassoc-0a2af637bfe052f03][0m
+[0m[1maws_route_table_association.app_public_subnet2: Refreshing state... [id=rtbassoc-0e26b890f33136782][0m
+[0m[1maws_instance.nginx1: Refreshing state... [id=i-0f1818edc5d4a4593][0m
+[0m[1maws_lb_listener.nginx: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:listener/app/globo-web-alb/5727ebef5ee67386/de65e63e209ba25d][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [31m-[0m destroy[0m
+
+Terraform will perform the following actions:
+
+[1m  # aws_instance.nginx1[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_instance" "nginx1" {
+      [31m-[0m[0m ami                                  = "ami-04c0f9ef2f505b609" [90m-> null[0m[0m
+      [31m-[0m[0m arn                                  = "arn:aws:ec2:us-east-1:185409218150:instance/i-0f1818edc5d4a4593" [90m-> null[0m[0m
+      [31m-[0m[0m associate_public_ip_address          = true [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                    = "us-east-1a" [90m-> null[0m[0m
+      [31m-[0m[0m cpu_core_count                       = 1 [90m-> null[0m[0m
+      [31m-[0m[0m cpu_threads_per_core                 = 1 [90m-> null[0m[0m
+      [31m-[0m[0m disable_api_stop                     = false [90m-> null[0m[0m
+      [31m-[0m[0m disable_api_termination              = false [90m-> null[0m[0m
+      [31m-[0m[0m ebs_optimized                        = false [90m-> null[0m[0m
+      [31m-[0m[0m get_password_data                    = false [90m-> null[0m[0m
+      [31m-[0m[0m hibernation                          = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                   = "i-0f1818edc5d4a4593" [90m-> null[0m[0m
+      [31m-[0m[0m instance_initiated_shutdown_behavior = "stop" [90m-> null[0m[0m
+      [31m-[0m[0m instance_state                       = "running" [90m-> null[0m[0m
+      [31m-[0m[0m instance_type                        = "t2.micro" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_address_count                   = 0 [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_addresses                       = [] [90m-> null[0m[0m
+      [31m-[0m[0m key_name                             = "aws_rsa" [90m-> null[0m[0m
+      [31m-[0m[0m monitoring                           = false [90m-> null[0m[0m
+      [31m-[0m[0m placement_partition_number           = 0 [90m-> null[0m[0m
+      [31m-[0m[0m primary_network_interface_id         = "eni-02450122752e84443" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns                          = "ip-10-0-0-123.ec2.internal" [90m-> null[0m[0m
+      [31m-[0m[0m private_ip                           = "10.0.0.123" [90m-> null[0m[0m
+      [31m-[0m[0m public_dns                           = "ec2-54-210-224-210.compute-1.amazonaws.com" [90m-> null[0m[0m
+      [31m-[0m[0m public_ip                            = "54.210.224.210" [90m-> null[0m[0m
+      [31m-[0m[0m secondary_private_ips                = [] [90m-> null[0m[0m
+      [31m-[0m[0m security_groups                      = [] [90m-> null[0m[0m
+      [31m-[0m[0m source_dest_check                    = true [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id                            = "subnet-0dda06f01f9bf2f5c" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                 = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                             = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tenancy                              = "default" [90m-> null[0m[0m
+      [31m-[0m[0m user_data_replace_on_change          = false [90m-> null[0m[0m
+      [31m-[0m[0m vpc_security_group_ids               = [
+          [31m-[0m[0m "sg-0bafdb6cff28fda4a",
+        ] [90m-> null[0m[0m
+
+      [31m-[0m[0m capacity_reservation_specification {
+          [31m-[0m[0m capacity_reservation_preference = "open" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m cpu_options {
+          [31m-[0m[0m core_count       = 1 [90m-> null[0m[0m
+          [31m-[0m[0m threads_per_core = 1 [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m credit_specification {
+          [31m-[0m[0m cpu_credits = "standard" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m enclave_options {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m maintenance_options {
+          [31m-[0m[0m auto_recovery = "default" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m metadata_options {
+          [31m-[0m[0m http_endpoint               = "enabled" [90m-> null[0m[0m
+          [31m-[0m[0m http_protocol_ipv6          = "disabled" [90m-> null[0m[0m
+          [31m-[0m[0m http_put_response_hop_limit = 1 [90m-> null[0m[0m
+          [31m-[0m[0m http_tokens                 = "optional" [90m-> null[0m[0m
+          [31m-[0m[0m instance_metadata_tags      = "disabled" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m private_dns_name_options {
+          [31m-[0m[0m enable_resource_name_dns_a_record    = false [90m-> null[0m[0m
+          [31m-[0m[0m enable_resource_name_dns_aaaa_record = false [90m-> null[0m[0m
+          [31m-[0m[0m hostname_type                        = "ip-name" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m root_block_device {
+          [31m-[0m[0m delete_on_termination = true [90m-> null[0m[0m
+          [31m-[0m[0m device_name           = "/dev/xvda" [90m-> null[0m[0m
+          [31m-[0m[0m encrypted             = false [90m-> null[0m[0m
+          [31m-[0m[0m iops                  = 100 [90m-> null[0m[0m
+          [31m-[0m[0m tags                  = {} [90m-> null[0m[0m
+          [31m-[0m[0m throughput            = 0 [90m-> null[0m[0m
+          [31m-[0m[0m volume_id             = "vol-0891b2917a2866676" [90m-> null[0m[0m
+          [31m-[0m[0m volume_size           = 8 [90m-> null[0m[0m
+          [31m-[0m[0m volume_type           = "gp2" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # aws_internet_gateway.app[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_internet_gateway" "app" {
+      [31m-[0m[0m arn      = "arn:aws:ec2:us-east-1:185409218150:internet-gateway/igw-09c524f09c085759f" [90m-> null[0m[0m
+      [31m-[0m[0m id       = "igw-09c524f09c085759f" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m tags     = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id   = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_lb.nginx[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb" "nginx" {
+      [31m-[0m[0m arn                                         = "arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386" [90m-> null[0m[0m
+      [31m-[0m[0m arn_suffix                                  = "app/globo-web-alb/5727ebef5ee67386" [90m-> null[0m[0m
+      [31m-[0m[0m desync_mitigation_mode                      = "defensive" [90m-> null[0m[0m
+      [31m-[0m[0m dns_name                                    = "globo-web-alb-1808504050.us-east-1.elb.amazonaws.com" [90m-> null[0m[0m
+      [31m-[0m[0m drop_invalid_header_fields                  = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_cross_zone_load_balancing            = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_deletion_protection                  = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_http2                                = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_tls_version_and_cipher_suite_headers = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_waf_fail_open                        = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_xff_client_port                      = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                          = "arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386" [90m-> null[0m[0m
+      [31m-[0m[0m idle_timeout                                = 60 [90m-> null[0m[0m
+      [31m-[0m[0m internal                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m ip_address_type                             = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancer_type                          = "application" [90m-> null[0m[0m
+      [31m-[0m[0m name                                        = "globo-web-alb" [90m-> null[0m[0m
+      [31m-[0m[0m preserve_host_header                        = false [90m-> null[0m[0m
+      [31m-[0m[0m security_groups                             = [
+          [31m-[0m[0m "sg-02af7709d01693711",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m subnets                                     = [
+          [31m-[0m[0m "subnet-0dda06f01f9bf2f5c",
+          [31m-[0m[0m "subnet-0f5d359a4d6037912",
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags                                        = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                    = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                      = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+      [31m-[0m[0m xff_header_processing_mode                  = "append" [90m-> null[0m[0m
+      [31m-[0m[0m zone_id                                     = "Z35SXDOTRQ7X7K" [90m-> null[0m[0m
+
+      [31m-[0m[0m access_logs {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m connection_logs {
+          [31m-[0m[0m enabled = false [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m subnet_mapping {
+          [31m-[0m[0m subnet_id = "subnet-0dda06f01f9bf2f5c" [90m-> null[0m[0m
+        }
+      [31m-[0m[0m subnet_mapping {
+          [31m-[0m[0m subnet_id = "subnet-0f5d359a4d6037912" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # aws_lb_listener.nginx[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb_listener" "nginx" {
+      [31m-[0m[0m arn               = "arn:aws:elasticloadbalancing:us-east-1:185409218150:listener/app/globo-web-alb/5727ebef5ee67386/de65e63e209ba25d" [90m-> null[0m[0m
+      [31m-[0m[0m id                = "arn:aws:elasticloadbalancing:us-east-1:185409218150:listener/app/globo-web-alb/5727ebef5ee67386/de65e63e209ba25d" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancer_arn = "arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386" [90m-> null[0m[0m
+      [31m-[0m[0m port              = 80 [90m-> null[0m[0m
+      [31m-[0m[0m protocol          = "HTTP" [90m-> null[0m[0m
+      [31m-[0m[0m tags              = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all          = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+
+      [31m-[0m[0m default_action {
+          [31m-[0m[0m order            = 1 [90m-> null[0m[0m
+          [31m-[0m[0m target_group_arn = "arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650" [90m-> null[0m[0m
+          [31m-[0m[0m type             = "forward" [90m-> null[0m[0m
+        }
+    }
+
+[1m  # aws_lb_target_group.nginx[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_lb_target_group" "nginx" {
+      [31m-[0m[0m arn                                = "arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650" [90m-> null[0m[0m
+      [31m-[0m[0m arn_suffix                         = "targetgroup/nginx-alb-tg/105f976c57a2a650" [90m-> null[0m[0m
+      [31m-[0m[0m deregistration_delay               = "300" [90m-> null[0m[0m
+      [31m-[0m[0m id                                 = "arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650" [90m-> null[0m[0m
+      [31m-[0m[0m ip_address_type                    = "ipv4" [90m-> null[0m[0m
+      [31m-[0m[0m lambda_multi_value_headers_enabled = false [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_algorithm_type      = "round_robin" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_anomaly_mitigation  = "off" [90m-> null[0m[0m
+      [31m-[0m[0m load_balancing_cross_zone_enabled  = "use_load_balancer_configuration" [90m-> null[0m[0m
+      [31m-[0m[0m name                               = "nginx-alb-tg" [90m-> null[0m[0m
+      [31m-[0m[0m port                               = 80 [90m-> null[0m[0m
+      [31m-[0m[0m protocol                           = "HTTP" [90m-> null[0m[0m
+      [31m-[0m[0m protocol_version                   = "HTTP1" [90m-> null[0m[0m
+      [31m-[0m[0m proxy_protocol_v2                  = false [90m-> null[0m[0m
+      [31m-[0m[0m slow_start                         = 0 [90m-> null[0m[0m
+      [31m-[0m[0m tags                               = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                           = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m target_type                        = "instance" [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                             = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+
+      [31m-[0m[0m health_check {
+          [31m-[0m[0m enabled             = true [90m-> null[0m[0m
+          [31m-[0m[0m healthy_threshold   = 5 [90m-> null[0m[0m
+          [31m-[0m[0m interval            = 30 [90m-> null[0m[0m
+          [31m-[0m[0m matcher             = "200" [90m-> null[0m[0m
+          [31m-[0m[0m path                = "/" [90m-> null[0m[0m
+          [31m-[0m[0m port                = "traffic-port" [90m-> null[0m[0m
+          [31m-[0m[0m protocol            = "HTTP" [90m-> null[0m[0m
+          [31m-[0m[0m timeout             = 5 [90m-> null[0m[0m
+          [31m-[0m[0m unhealthy_threshold = 2 [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m stickiness {
+          [31m-[0m[0m cookie_duration = 86400 [90m-> null[0m[0m
+          [31m-[0m[0m enabled         = false [90m-> null[0m[0m
+          [31m-[0m[0m type            = "lb_cookie" [90m-> null[0m[0m
+        }
+
+      [31m-[0m[0m target_failover {}
+
+      [31m-[0m[0m target_health_state {}
+    }
+
+[1m  # aws_route_table.app[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table" "app" {
+      [31m-[0m[0m arn              = "arn:aws:ec2:us-east-1:185409218150:route-table/rtb-01994dfdc78e186a5" [90m-> null[0m[0m
+      [31m-[0m[0m id               = "rtb-01994dfdc78e186a5" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id         = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m propagating_vgws = [] [90m-> null[0m[0m
+      [31m-[0m[0m route            = [
+          [31m-[0m[0m {
+              [31m-[0m[0m carrier_gateway_id         = ""
+              [31m-[0m[0m cidr_block                 = "0.0.0.0/0"
+              [31m-[0m[0m core_network_arn           = ""
+              [31m-[0m[0m destination_prefix_list_id = ""
+              [31m-[0m[0m egress_only_gateway_id     = ""
+              [31m-[0m[0m gateway_id                 = "igw-09c524f09c085759f"
+              [31m-[0m[0m ipv6_cidr_block            = ""
+              [31m-[0m[0m local_gateway_id           = ""
+              [31m-[0m[0m nat_gateway_id             = ""
+              [31m-[0m[0m network_interface_id       = ""
+              [31m-[0m[0m transit_gateway_id         = ""
+              [31m-[0m[0m vpc_endpoint_id            = ""
+              [31m-[0m[0m vpc_peering_connection_id  = ""
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m tags             = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all         = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id           = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_route_table_association.app_public_subnet1[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "app_public_subnet1" {
+      [31m-[0m[0m id             = "rtbassoc-0a2af637bfe052f03" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-01994dfdc78e186a5" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-0dda06f01f9bf2f5c" [90m-> null[0m[0m
+    }
+
+[1m  # aws_route_table_association.app_public_subnet2[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_route_table_association" "app_public_subnet2" {
+      [31m-[0m[0m id             = "rtbassoc-0e26b890f33136782" [90m-> null[0m[0m
+      [31m-[0m[0m route_table_id = "rtb-01994dfdc78e186a5" [90m-> null[0m[0m
+      [31m-[0m[0m subnet_id      = "subnet-0f5d359a4d6037912" [90m-> null[0m[0m
+    }
+
+[1m  # aws_security_group.alb_sg[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "alb_sg" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:185409218150:security-group/sg-02af7709d01693711" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Managed by Terraform" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-02af7709d01693711" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 5000
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 5000
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 80
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 80
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "nginx_alb_sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_security_group.nginx_sg[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_security_group" "nginx_sg" {
+      [31m-[0m[0m arn                    = "arn:aws:ec2:us-east-1:185409218150:security-group/sg-0bafdb6cff28fda4a" [90m-> null[0m[0m
+      [31m-[0m[0m description            = "Managed by Terraform" [90m-> null[0m[0m
+      [31m-[0m[0m egress                 = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 0
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "-1"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 0
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m id                     = "sg-0bafdb6cff28fda4a" [90m-> null[0m[0m
+      [31m-[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 22
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 22
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 5000
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 5000
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 8080
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 8080
+            },
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "0.0.0.0/0",
+                ]
+              [31m-[0m[0m description      = ""
+              [31m-[0m[0m from_port        = 80
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 80
+            },
+        ] [90m-> null[0m[0m
+      [31m-[0m[0m name                   = "nginx_sg" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id               = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m revoke_rules_on_delete = false [90m-> null[0m[0m
+      [31m-[0m[0m tags                   = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all               = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                 = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_subnet.public_subnet1[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "public_subnet1" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:185409218150:subnet/subnet-0dda06f01f9bf2f5c" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1a" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az2" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.0.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-0dda06f01f9bf2f5c" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = true [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_subnet.public_subnet2[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_subnet" "public_subnet2" {
+      [31m-[0m[0m arn                                            = "arn:aws:ec2:us-east-1:185409218150:subnet/subnet-0f5d359a4d6037912" [90m-> null[0m[0m
+      [31m-[0m[0m assign_ipv6_address_on_creation                = false [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone                              = "us-east-1b" [90m-> null[0m[0m
+      [31m-[0m[0m availability_zone_id                           = "use1-az4" [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                                     = "10.0.1.0/24" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns64                                   = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_lni_at_device_index                     = 0 [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_a_record_on_launch    = false [90m-> null[0m[0m
+      [31m-[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                             = "subnet-0f5d359a4d6037912" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_native                                    = false [90m-> null[0m[0m
+      [31m-[0m[0m map_customer_owned_ip_on_launch                = false [90m-> null[0m[0m
+      [31m-[0m[0m map_public_ip_on_launch                        = true [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                                       = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m private_dns_hostname_type_on_launch            = "ip-name" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                           = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                                       = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m vpc_id                                         = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+    }
+
+[1m  # aws_vpc.app[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "aws_vpc" "app" {
+      [31m-[0m[0m arn                                  = "arn:aws:ec2:us-east-1:185409218150:vpc/vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+      [31m-[0m[0m assign_generated_ipv6_cidr_block     = false [90m-> null[0m[0m
+      [31m-[0m[0m cidr_block                           = "10.0.0.0/16" [90m-> null[0m[0m
+      [31m-[0m[0m default_network_acl_id               = "acl-0523df8653fe070df" [90m-> null[0m[0m
+      [31m-[0m[0m default_route_table_id               = "rtb-02343a56c1bf1bce5" [90m-> null[0m[0m
+      [31m-[0m[0m default_security_group_id            = "sg-006a6f652fc46d75f" [90m-> null[0m[0m
+      [31m-[0m[0m dhcp_options_id                      = "dopt-aff46fd5" [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns_hostnames                 = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_dns_support                   = true [90m-> null[0m[0m
+      [31m-[0m[0m enable_network_address_usage_metrics = false [90m-> null[0m[0m
+      [31m-[0m[0m id                                   = "vpc-0db0259fdb23abd47" [90m-> null[0m[0m
+      [31m-[0m[0m instance_tenancy                     = "default" [90m-> null[0m[0m
+      [31m-[0m[0m ipv6_netmask_length                  = 0 [90m-> null[0m[0m
+      [31m-[0m[0m main_route_table_id                  = "rtb-02343a56c1bf1bce5" [90m-> null[0m[0m
+      [31m-[0m[0m owner_id                             = "185409218150" [90m-> null[0m[0m
+      [31m-[0m[0m tags                                 = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+      [31m-[0m[0m tags_all                             = {
+          [31m-[0m[0m "billing_code" = "00"
+          [31m-[0m[0m "company"      = "Globomantics"
+          [31m-[0m[0m "project"      = "Globomantics-Paglipay"
+        } [90m-> null[0m[0m
+    }
+
+[1mPlan:[0m 0 to add, 0 to change, 13 to destroy.
+[0m
+Changes to Outputs:
+  [31m-[0m[0m aws_instance_public_dns = "http://ec2-3-83-29-29.compute-1.amazonaws.com" [90m-> null[0m[0m
+[0m[1maws_route_table_association.app_public_subnet2: Destroying... [id=rtbassoc-0e26b890f33136782][0m[0m
+[0m[1maws_instance.nginx1: Destroying... [id=i-0f1818edc5d4a4593][0m[0m
+[0m[1maws_route_table_association.app_public_subnet1: Destroying... [id=rtbassoc-0a2af637bfe052f03][0m[0m
+[0m[1maws_lb_listener.nginx: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:listener/app/globo-web-alb/5727ebef5ee67386/de65e63e209ba25d][0m[0m
+[0m[1maws_route_table_association.app_public_subnet1: Destruction complete after 2s[0m
+[0m[1maws_route_table_association.app_public_subnet2: Destruction complete after 3s[0m
+[0m[1maws_lb_listener.nginx: Destruction complete after 3s[0m
+[0m[1maws_route_table.app: Destroying... [id=rtb-01994dfdc78e186a5][0m[0m
+[0m[1maws_lb_target_group.nginx: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:targetgroup/nginx-alb-tg/105f976c57a2a650][0m[0m
+[0m[1maws_lb.nginx: Destroying... [id=arn:aws:elasticloadbalancing:us-east-1:185409218150:loadbalancer/app/globo-web-alb/5727ebef5ee67386][0m[0m
+[0m[1maws_lb_target_group.nginx: Destruction complete after 1s[0m
+[0m[1maws_lb.nginx: Destruction complete after 2s[0m
+[0m[1maws_route_table.app: Destruction complete after 2s[0m
+[0m[1maws_subnet.public_subnet2: Destroying... [id=subnet-0f5d359a4d6037912][0m[0m
+[0m[1maws_security_group.alb_sg: Destroying... [id=sg-02af7709d01693711][0m[0m
+[0m[1maws_internet_gateway.app: Destroying... [id=igw-09c524f09c085759f][0m[0m
+[0m[1maws_instance.nginx1: Still destroying... [id=i-0f1818edc5d4a4593, 10s elapsed][0m[0m
+[0m[1maws_subnet.public_subnet2: Still destroying... [id=subnet-0f5d359a4d6037912, 10s elapsed][0m[0m
+[0m[1maws_security_group.alb_sg: Still destroying... [id=sg-02af7709d01693711, 10s elapsed][0m[0m
+[0m[1maws_internet_gateway.app: Still destroying... [id=igw-09c524f09c085759f, 10s elapsed][0m[0m
+[0m[1maws_subnet.public_subnet2: Destruction complete after 10s[0m
+[0m[1maws_security_group.alb_sg: Destruction complete after 11s[0m
+[0m[1maws_instance.nginx1: Still destroying... [id=i-0f1818edc5d4a4593, 20s elapsed][0m[0m
+[0m[1maws_internet_gateway.app: Still destroying... [id=igw-09c524f09c085759f, 20s elapsed][0m[0m
+[0m[1maws_instance.nginx1: Still destroying... [id=i-0f1818edc5d4a4593, 30s elapsed][0m[0m
+[0m[1maws_internet_gateway.app: Destruction complete after 29s[0m
+[0m[1maws_instance.nginx1: Still destroying... [id=i-0f1818edc5d4a4593, 40s elapsed][0m[0m
+[0m[1maws_instance.nginx1: Destruction complete after 44s[0m
+[0m[1maws_subnet.public_subnet1: Destroying... [id=subnet-0dda06f01f9bf2f5c][0m[0m
+[0m[1maws_security_group.nginx_sg: Destroying... [id=sg-0bafdb6cff28fda4a][0m[0m
+[0m[1maws_subnet.public_subnet1: Destruction complete after 2s[0m
+[0m[1maws_security_group.nginx_sg: Destruction complete after 1s[0m
+[0m[1maws_vpc.app: Destroying... [id=vpc-0db0259fdb23abd47][0m[0m
+[0m[1maws_vpc.app: Destruction complete after 3s[0m
+[0m[1m[32m
+Destroy complete! Resources: 13 destroyed.
+[0m
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
