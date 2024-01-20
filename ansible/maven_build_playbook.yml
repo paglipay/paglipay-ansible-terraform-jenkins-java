@@ -2,7 +2,8 @@
   hosts: all
   become: true
   vars:
-    download_url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz
+    # download_url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz
+    download_url: https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.18/bin/apache-tomcat-10.1.18.tar.gz
   tasks:
   - name: Update the package cache
     package:
@@ -53,12 +54,12 @@
         [Service]
         Type=forking
         User=tomcat
-        Environment="CATALINA_PID=/opt/tomcat/apache-tomcat-9.0.54/logs/tomcat.pid"
-        Environment="CATALINA_BASE=/opt/tomcat/apache-tomcat-9.0.54"
-        Environment="CATALINA_HOME=/opt/tomcat/apache-tomcat-9.0.54"
+        Environment="CATALINA_PID=/opt/tomcat/apache-tomcat-10.1.18/logs/tomcat.pid"
+        Environment="CATALINA_BASE=/opt/tomcat/apache-tomcat-10.1.18"
+        Environment="CATALINA_HOME=/opt/tomcat/apache-tomcat-10.1.18"
         Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-        ExecStart=/opt/tomcat/apache-tomcat-9.0.54/bin/startup.sh
-        ExecStop=/opt/tomcat/apache-tomcat-9.0.54/bin/shutdown.sh
+        ExecStart=/opt/tomcat/apache-tomcat-10.1.18/bin/startup.sh
+        ExecStop=/opt/tomcat/apache-tomcat-10.1.18/bin/shutdown.sh
         Restart=on-abnormal
         [Install]
         WantedBy=multi-user.target
@@ -102,7 +103,7 @@
   - name: Copy WAR File to Tomcat Webapps Directory
     copy:
       src: ../app/spring-demo/target/java-getting-started-1.0.war
-      dest: /opt/tomcat/apache-tomcat-9.0.54/webapps/java-getting-started-1.0.war
+      dest: /opt/tomcat/apache-tomcat-10.1.18/webapps/java-getting-started-1.0.war
       owner: tomcat
       group: tomcat
       mode: 0644
