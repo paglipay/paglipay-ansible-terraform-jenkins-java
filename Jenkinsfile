@@ -40,11 +40,7 @@ pipeline {
                 sh "cd terraform/ ; terraform plan -out tfplan"
                 // sh 'cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
             }
-            // steps {
-            //     sh 'terraform init'
-            //     sh "terraform plan -out tfplan"
-            //     sh 'terraform show -no-color tfplan > tfplan.txt'
-            // }
+
         }
         stage('Approval') {
            when {
@@ -66,10 +62,7 @@ pipeline {
             steps {
                 sh 'cd terraform/ ; terraform ${action} --auto-approve'
             }
-            // steps {
-            //     sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
-            //     // sh "pwd;cd terraform/ ; terraform destroy"
-            // }
+
         }
     }
 
